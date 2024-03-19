@@ -1,0 +1,68 @@
+import os 
+import csv 
+#chatgpt/collaborative peer effort was used for line 4-12 
+def calculate_changes(analysis):
+    changes = [int(analysis[i+1][1]) - int(analysis[i][1]) for i in range(len(analysis)-1)]
+    max_increase = max(changes)
+    max_increase_month = analysis[changes.index(max_increase) + 1][0]
+    max_decrease = min(changes)
+    max_decrease_month = analysis[changes.index(max_decrease) +1][0]
+    return max_increase, max_increase_month, max_decrease, max_decrease_month 
+
+
+   
+
+
+def format_output(max_increase, max_increase_month, max_decrease, max_decrease_month):
+    output = f"Greatest Increase in Profits: {max_increase_month} (${max_increase})\n"
+    output_2 = f"Greatest Decrease in Profits: {max_decrease_month} (${max_decrease})\n"
+    return output
+#line 14 completed with help from learning assistant 
+budget_data_csv = os.path.join("Resources", "budget_data.csv")
+
+
+with open(budget_data_csv, 'r') as csvfile:
+    
+    csvreader = csv.reader(csvfile)
+    
+    next(csvreader, None) 
+
+    Date_sum = 0
+    Date_index = []
+    analysis = []
+  
+    profits = []
+    total_profit = 0
+    
+    for row in csvreader:
+        analysis.append(row) 
+        
+
+        Date_value = row[0]  
+        Date_sum += 1 
+        profit_value = float(row[1])
+        
+        Date_index.append(Date_value)
+        profits.append(profit_value)
+
+        total_profit += profit_value
+max_difference = max(profits) - min(profits)
+
+max_increase, max_increase_month, max_decrease, max_decrease_month = calculate_changes(analysis)
+
+
+output = format_output(max_increase, max_increase_month, max_decrease, max_decrease_month)
+output_2 = max_decrease_month, max_decrease
+
+
+      
+    
+
+
+print("Number of Months:", Date_sum)
+print("total profit:", total_profit) 
+print("Greatest Difference Between Rows:", max_difference)
+print(output)
+print("Greatest Decrease in Profits", output_2) 
+
+
